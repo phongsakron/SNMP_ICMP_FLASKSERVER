@@ -1,0 +1,3 @@
+ip,communitystring,active,build,location,node,rack,brand,contact number,type,serial number
+10.1.1.1,public,true,ICT,ICT,1,,cisco,1101,switch,2000
+10.2.2.2,public,false,ICT,ICT,1,ICT,cisco,1101,router,2000

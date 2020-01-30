@@ -1,0 +1,75 @@
+@hostname = 127.0.0.1
+@port = 5000
+@host = http://{{hostname}}:{{port}}
+@json = application/json
+
+GET {{host}}/
+###
+GET {{host}}/getDevice
+###
+GET {{host}}/getAllRoutes
+
+###
+# DASHBOARD
+
+GET {{host}}/dashboard
+###
+
+GET {{host}}/getupdownamout/0
+###
+
+GET {{host}}/getTimestampLog/20
+###
+
+GET {{host}}/getHorizonChart
+###
+# REPORT
+POST {{host}}/report1
+content-type: {{json}}
+
+{
+    "dateFrom": "2019-1-1",
+    "dateToo": "2020-1-1",
+    "select": "location"
+}
+###
+POST {{host}}/report2
+content-type: {{json}}
+
+{
+    "dateFrom": "2019-1-1",
+    "dateToo": "2020-1-1",
+    "node": "1",
+    "build":"",
+    "location":"",
+    "rack":""
+}
+###
+POST {{host}}/report3
+content-type: {{json}}
+
+{
+    "node": "1",
+    "build":"",
+    "location":"",
+    "rack":"",
+    "contract": ""
+}
+###
+GET {{host}}/report4
+content-type: {{json}}
+
+{
+    "select": "location",
+    "active": "active"
+}
+###
+POST  {{host}}/report5
+content-type: {{json}}
+
+{
+    "dateFrom": "2019-1-1",
+    "dateToo": "2020-1-1",
+    "select": "location"
+}
+###
