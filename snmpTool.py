@@ -30,12 +30,12 @@ class snmpTool:
         if errorIndication:
             print(errorIndication)
         elif errorStatus:
-            print('%s at %s' % (errorStatus.prettyPrint(),
+            print('%s at %s' % (errorStatus.prettyprint(),
                                 errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
         else:
             for varBind in varBinds:
-                # print(' == '.join([x.prettyPrint() for x in varBind]))
-                a = [x.prettyPrint() for x in varBind]
+                # print(' == '.join([x.prettyprint() for x in varBind]))
+                a = [x.prettyprint() for x in varBind]
                 return a[1]
 
     def getSNMPbyOid(self):
@@ -47,7 +47,7 @@ class snmpTool:
                    ObjectType(ObjectIdentity(self.oidAdd)))
         )
         for varBind in varBinds:
-            a = [x.prettyPrint() for x in varBind]
+            a = [x.prettyprint() for x in varBind]
             return a[1]
 
     def bulkSNMPbyOid(self):
@@ -65,12 +65,12 @@ class snmpTool:
         else:
             if errorStatus:
                 print('%s at %s\n' % (
-                    errorStatus.prettyPrint(),
+                    errorStatus.prettyprint(),
                     errorIndex and varBindTable[-1][int(errorIndex)-1] or '?'
                 ))
             else:
                 for varBindTableRow in varBindTable:
                     for name, val in varBindTableRow:
-                        # print ('%s = %s' % (name.prettyPrint(), val.prettyPrint()))
-                        a.append(val.prettyPrint())
+                        # print ('%s = %s' % (name.prettyprint(), val.prettyprint()))
+                        a.append(val.prettyprint())
         return a

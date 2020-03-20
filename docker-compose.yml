@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  database:
+    container_name: "monitor_icmp_snmp_db"
+    build:
+      context: .
+      dockerfile: db.dockerfile
+    image: monitor_icmp_snmp_db
+    ports:
+      - 7001:3306
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 6BB4837EB74329105EE4568DDA7DC67ED2CA2AD9
+      MYSQL_USER: 8FO7oVyu
+      MYSQL_PASSWORD: 6BB4837EB74329105EE4568DDA7DC67ED2CA2AD9
+      MYSQL_DATABASE: device
+    volumes:
+      - "device:/var/lib/mysql:rw"
+
+  phpmyadmin:
+    depends_on:
+      - database
+    container_name: "monitor_icmp_snmp_backend_app_pma"
+    build:
+      context: .
+      dockerfile: pma.dockerfile
+    image: monitor_icmp_snmp_app_pma
+    links:
+      - database:db
+    ports:
+      - 7002:80
+    restart: always
+
+  backend:
+    depends_on:
+      - database
+    container_name: "monitor_icmp_snmp_backend"
+    build:
+      context: .
+      dockerfile: python.dockerfile
+    image: monitor_icmp_snmp_backend
+    links:
+      - database:db
+    ports:
+      - 7003:5000
+    restart: always
+    working_dir: /usr/src/app
+    
+
+volumes:
+  device: {}
+  

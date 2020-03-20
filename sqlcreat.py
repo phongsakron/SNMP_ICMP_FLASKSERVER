@@ -1,10 +1,13 @@
 # database device
 # table devicedetail devicestatus deviceinterface
-
+import configparser
 
 class sqlCreat:
-    databasename = "device"
-    creatDatabase = "CREATE DATABASE device;"
+    config = configparser.ConfigParser()
+    config.read('appsetting.ini')
+    
+    databasename = config.get('MYSQL','databasename')
+    creatDatabase = "CREATE DATABASE "+databasename+";"
 
     creatTableDeviceDetail = """CREATE TABLE devicedetail (
                     deviceid int NOT NULL AUTO_INCREMENT PRIMARY KEY,

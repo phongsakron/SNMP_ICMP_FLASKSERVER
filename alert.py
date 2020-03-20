@@ -79,7 +79,7 @@ def sendmail(sendmsg,receiver):
         server.sendmail(sender_email, receiver_email, msg.as_string())
         # print("success")
     except Exception as e:
-        # Print any error messages to stdout
+        # print any error messages to stdout
         print(e)
     finally:
         server.quit() 

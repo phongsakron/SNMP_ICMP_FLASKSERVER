@@ -3,24 +3,28 @@ from mysql.connector import errorcode
 from sqlcreat import sqlCreat
 import json
 import datetime
+import configparser
 
 s = sqlCreat()
-
-host = "localhost"
-user = "root"
-passwd = ""
-database = s.databasename
+config = configparser.ConfigParser()
+config.read('appsetting.ini')
+host = config.get('MYSQL','host')
+port = config.get('MYSQL','port')
+user = config.get('MYSQL','user')
+passwd = config.get('MYSQL','passwd')
+database = config.get('MYSQL','databasename')
 
 def connectDB():  # connect to database
     try:
         mydb = mysql.connector.connect(
             host=host,
+            port=port,
             user=user,
             passwd=passwd,
             database=database
         )
         mycursor = mydb.cursor()
-        # print("connected DB")
+        print("connected DB")
         return mydb,mycursor
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -29,6 +33,7 @@ def connectDB():  # connect to database
             print("Database does not exist. create one name " + database)
             mydb = mysql.connector.connect(
                 host=host,
+                port=port,
                 user=user,
                 passwd=passwd,)
             mycursor = mydb.cursor()
@@ -36,6 +41,7 @@ def connectDB():  # connect to database
             mydb.close()
             mydb = mysql.connector.connect(
                 host=host,
+                port=port,
                 user=user,
                 passwd=passwd,
                 database=database
@@ -238,18 +244,13 @@ def uploadPortStatusSNMP(deviceId,portIndex,portType,portStatus,portPotocol):
             print(err)
 
 def main():
-    value  = selectActive()
-    # print(value)
-
-    selector = """SELECT  devicelocation.locationID,devicelocation.build,devicelocation.location,devicelocation.node,devicelocation.rack ,devicedetail.active, a2.lastCheck ,a2.deviceid, a2.ip , a2.icmpstatus , a2.timedate FROM devicedetail
-                LEFT JOIN devicelocation ON devicedetail.deviceid = devicelocation.locationID
-                INNER JOIN (SELECT myjoin.lastCheck,icmpstatus.deviceid,devicedetail.ip,icmpstatus.icmpstatus,icmpstatus.timedate FROM icmpstatus
-                INNER JOIN (SELECT MAX(icmpstatus.icmpid) AS LastCheck,icmpstatus.deviceid FROM icmpstatus
-                GROUP BY icmpstatus.deviceid) AS myjoin ON icmpstatus.icmpid = myjoin.LastCheck AND icmpstatus.deviceid = myjoin.deviceid
-                INNER JOIN devicedetail ON devicedetail.deviceid = icmpstatus.deviceid) a2 ON devicedetail.deviceid = a2.deviceid;"""
-
-    value2 , head = select(selector)
-    # print(value2,head)
+    selector = "SELECT * FROM user WHERE user.username ='admin' AND user.password = '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92';"
+    # selector = selector.format(user,passW)
+    results , head = select(selector)
+    print(results)
+    
+        
+        
 
 
 if __name__ == '__main__':

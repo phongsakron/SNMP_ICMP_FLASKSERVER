@@ -3,14 +3,17 @@ from mysql.connector import errorcode
 from sqlcreat import sqlCreat
 import json
 import datetime
+import configparser
 
 class sqlTool:
     s = sqlCreat()
 
-    host = "localhost"
-    user = "root"
-    passwd = ""
-    database = s.databasename
+    config = configparser.ConfigParser()
+    config.read('appsetting.ini')
+    host = config.get('MYSQL','host')
+    user = config.get('MYSQL','user')
+    passwd = config.get('MYSQL','passwd')
+    database = config.get('MYSQL','databasename')
 
     resultList = []
   

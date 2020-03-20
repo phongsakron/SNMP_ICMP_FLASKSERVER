@@ -142,28 +142,35 @@ class editUserService(Resource):
 
 
 class auth(Resource):
-    def post(self, user, passW):
+    def post(self):
+        data = request.get_json()
+        
+        user = data['username']
+        passW = data['password']
         selector = "SELECT * FROM user WHERE user.username ='{0}' AND user.password = '{1}';"
         selector = selector.format(user,passW)
-        results , head = sqllib.select(selector)
-        re = []
-        if results:
-            re = mergeResultHead(results,head)
+        try:
+            results , head = sqllib.select(selector)
             
-            uType = ""
-            if re[0]['usertype'] == 1:
-                uType = "admin"
-            else:
-                uType = "user"
-        print(re)
-        if re:
-            return {'auth': "success",
-                    'type' : uType,
-                    'fname': re[0]['firstname'],
-                    'lname':re[0]['lastname'],
-                    'id':re[0]['id'],}
-        else:
+            re = []
+            if results:
+                re = mergeResultHead(results,head)
+                
+                uType = ""
+                if re[0]['usertype'] == 1:
+                    uType = "admin"
+                else:
+                    uType = "user"
+            # print(re)
+            if re:
+                return {'auth': "success",
+                        'type' : uType,
+                        'fname': re[0]['firstname'],
+                        'lname':re[0]['lastname'],
+                        'id':re[0]['id'],}   
+        except Exception as err:
             return {'auth': "fail"}
+        return {'auth': "fail"}
         
 class toggleMailAlert(Resource):
     def post(self):
@@ -215,7 +222,7 @@ api.add_resource(addUserService, "/userAdd")
 api.add_resource(removeUserService, "/userRemove/<string:userId>")
 api.add_resource(toggleMailAlert, "/toggleMailUser")
 api.add_resource(editUserService, "/userEdit")
-api.add_resource(auth, "/auth/<string:user>/<string:passW>")
+api.add_resource(auth, "/auth")
 
 
 # * ----------------------------------------------------------------
@@ -1303,6 +1310,10 @@ api.add_resource(routes, "/getAllRoutes")
 
 #  ! app setting
 
+class getHello(Resource):
+    def get(self):
+        return jsonify({'status':"success",
+                        'data':"Hello"})
 class getLoopTime(Resource):
     def get(self):
         config = configparser.ConfigParser()
@@ -1328,6 +1339,7 @@ class setLoopTime(Resource):
             config.write(configfile)
         return {"task":"success"} 
 
+api.add_resource(getHello, "/")
 api.add_resource(setLoopTime, "/setLoopTime/<string:status>")
 api.add_resource(getLoopTime, "/getLoopTime")
 api.add_resource(getCSV, "/getCSV")
@@ -1336,6 +1348,6 @@ api.add_resource(getCSV, "/getCSV")
 _debug = True
 if __name__ == '__main__':
     if _debug == True:
-        app.run(debug=True)
+        app.run(debug=True,host="0.0.0.0")
     else:
         app.run(debug=False,host="0.0.0.0")

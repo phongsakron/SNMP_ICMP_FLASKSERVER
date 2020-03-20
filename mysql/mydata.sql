@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 
 INSERT INTO `user` (`id`, `username`, `password`, `firstname`, `lastname`, `usertype`, `email`, `emailAlert`) VALUES
-	(31, 'admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'admin', 'admin', b'1', 'admin@admin.com', 0);
+	(31, 'admin', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'admin', 'admin', b'1', 'admin@admin.com', 0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 -- Data exporting was unselected.
 
